@@ -1,0 +1,38 @@
+# Redis CLI practice commands
+# Open the shell from this project folder:
+#   docker compose exec redis redis-cli
+#
+# The commands below are for manual learning. Use the disposable lab container.
+
+# STRING: set/get, counter, expiry
+SET user:42:name "Linh"
+GET user:42:name
+INCR page:home:views
+INCRBY page:home:views 10
+SET otp:linh "834512" EX 60
+TTL otp:linh
+
+# HASH: user profile
+HSET user:42 name "Linh" city "Hanoi" age 21
+HGET user:42 city
+HGETALL user:42
+
+# LIST: queue
+LPUSH jobs "resize:img1" "resize:img2"
+RPOP jobs
+
+# SET: unique tags and set intersection
+SADD tags:post1 python data ai
+SADD tags:post2 python web
+SINTER tags:post1 tags:post2
+
+# SORTED SET: leaderboard
+ZADD board 1200 "linh" 950 "nam" 1430 "mai"
+ZREVRANGE board 0 2 WITHSCORES
+ZRANK board "nam"
+
+# Inspect keys (SCAN is preferred over KEYS on a production database)
+SCAN 0 MATCH *
+
+# Remove only the example keys created above when finished
+DEL user:42:name page:home:views otp:linh user:42 jobs tags:post1 tags:post2 board
